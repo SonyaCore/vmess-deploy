@@ -9,6 +9,8 @@
 PORT=80
 UUID=$(cat /proc/sys/kernel/random/uuid)
 IP=$(hostname -I | cut -d' ' -f1)
+CONFIGNAME="config.json"
+
 
 permissioncheck(){
 ROOT_UID=0
@@ -23,6 +25,7 @@ echo "Press Ctrl + C if you want to cancel the installation"
 
 sleep 10
 
+config(){
 cat > docker-compose.yaml <<DOCKER
 version: '3'
 services:
@@ -33,10 +36,10 @@ services:
     environment:
       - V2RAY_VMESS_AEAD_FORCED=false
     volumes:
-        - ./config.json:/etc/v2ray/config.json:ro
+        - ./$CONFIGNAME:/etc/v2ray/config.json:ro
 DOCKER
 
-cat > config.json <<CONFIG
+cat > $CONFIGNAME <<CONFIG
 {
   "log": {
     "loglevel": "info"
@@ -98,6 +101,7 @@ cat > config.json <<CONFIG
   ]
 } 
 CONFIG
+}
 
 # Update Repo & Install Docker &
 install(){
@@ -114,6 +118,9 @@ install
 service
 
 sleep 3
+
+# Make Config
+config
 
 # Allow firewall 
 ufw allow $PORT
