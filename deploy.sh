@@ -132,6 +132,7 @@ echo "! UUID : $UUID"
 echo "! Use Below Link for Import:"
 echo ""
 
+# Vmess Link Generation
 printf vmess://;echo \{\"add\":\"$IP\", \
 \"aid\":\"0\", \
 \"host\":\"\", \
@@ -146,3 +147,6 @@ printf vmess://;echo \{\"add\":\"$IP\", \
 
 echo ""
 echo "! After importing vmess link change the IP to your Internal Server IP"
+
+# Clean Up
+rm -rf deploy.sh
