@@ -100,11 +100,18 @@ cat > config.json <<CONFIG
 CONFIG
 
 # Update Repo & Install Docker &
-apt update && apt install -y docker.io docker-compose
+install(){
+curl https://get.docker.com | sudo sh
+}
 
-# Run Service 
+# Run Service
+service(){
 systemctl enable --now containerd
 systemctl enable --now docker
+}
+
+install
+service
 
 sleep 3
 
