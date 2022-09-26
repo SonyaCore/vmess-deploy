@@ -117,6 +117,18 @@ docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to
 echo "! UUID : $UUID"
 echo "! Use Below Link for Import:"
 echo ""
-printf vmess://;echo \{\"add\":\"$IP\",\"aid\":\"0\",\"host\":\"\",\"id\":\"$UUID\",\"net\":\"ws\",\"path\":\"/graphql\",\"port\":\"$PORT\",\"ps\":\"v2ray\",\"tls\":\"\",\"type\":\"none\",\"v\":\"2\"\}|base64 -w0;echo
+
+printf vmess://;echo \{\"add\":\"$IP\", \
+\"aid\":\"0\", \
+\"host\":\"\", \
+\"id\":\"$UUID\", \
+\"net\":\"ws\", \
+\"path\":\"/graphql\", \
+\"port\":\"$PORT\", \
+\"ps\":\"v2ray\", \
+\"tls\":\"\", \
+\"type\":\"none\", \
+\"v\":\"2\"\}|base64 -w0;echo
+
 echo ""
 echo "! After importing vmess link change the IP to your Internal Server IP"
