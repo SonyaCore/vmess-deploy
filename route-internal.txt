@@ -1,0 +1,3 @@
+sudo screen ssh -o GatewayPorts=true  -N -L 80:0.0.0.0:80 USER@IP
+
+Note : After importing vmess link change the IP to your Internal Server IP
