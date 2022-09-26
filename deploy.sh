@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Vmess Deploy
+# --------------------------------
+# author    : SonyaCore
+#	      https://github.com/SonyaCore
+#
+
 PORT=80
 UUID=$(cat /proc/sys/kernel/random/uuid)
 IP=$(hostname -I | cut -d' ' -f1)
@@ -106,7 +112,7 @@ sleep 3
 ufw allow $PORT
 
 # Start Docker Compose Service
-docker-compose up -d
+docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry." ; exit 1
 
 echo "! UUID : $UUID"
 echo "! Use Below Link for Import:"
