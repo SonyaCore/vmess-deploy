@@ -23,7 +23,7 @@ permissioncheck
 echo "Run this script on external IP"
 echo "Press Ctrl + C if you want to cancel the installation"
 
-sleep 10
+sleep 5
 
 config(){
 cat > docker-compose.yaml <<DOCKER
@@ -104,18 +104,16 @@ CONFIG
 }
 
 # Update Repo & Install Docker &
-install(){
 curl https://get.docker.com | sudo sh
-}
+curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
 
 # Run Service
-service(){
 systemctl enable --now containerd
 systemctl enable --now docker
-}
 
-install
-service
 
 sleep 3
 
@@ -126,7 +124,7 @@ config
 ufw allow $PORT
 
 # Start Docker Compose Service
-docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry." ; exit 1
+docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
 
 echo "! UUID : $UUID"
 echo "! Use Below Link for Import:"
