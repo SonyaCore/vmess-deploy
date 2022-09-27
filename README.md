@@ -13,7 +13,7 @@ chmod +x run.sh
 ```
 **Then you can give your server details to the script to install:**
 ```
-./run.sh —user root —ip IP —port 22 —install
+./run.sh —user root —ip External-IP —port 22 —install
 ```
 Note:
 I used a ready-made template for its configuration here
@@ -22,6 +22,11 @@ You can change the protocol or... according to your needs and then do the instal
 **After installation, it will give you a link that you can use it to import on your client**
  
 And if you want to use the internal IP to bypass the filter:
+
+```
+./run.sh —user root —ip Exernal-IP -fi HOST-IP -fu HOST-USER --forward
+```
+Manual :
 ```
 ssh to internal ip
 sudo screen ssh -o GatewayPorts=true -N -L 80:0.0.0.0:80 USER@External-IP
