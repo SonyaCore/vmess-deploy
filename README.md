@@ -1,13 +1,24 @@
 <h2 align="center"> vmess-deploy </h2>
 vmess-deploy are for quickly set up your desired v2ray VPN server
 
-How to Use : 
+<h3> How to Use : </h3> 
+
+<h4> Quick Method </h4>
+
+```
+curl https://raw.githubusercontent.com/SonyaCore/vmess-deploy/main/deploy.sh | sudo bash
+```
+
+<h4> Using Runner Script </h4> 
 
 **Git clone :**
+
 ```bash
 https://github.com/SonyaCore/vmess-deploy.git
 ```
+
 **Give executable permission to run.sh file**
+
 ```
 chmod +x run.sh
 ```
@@ -16,7 +27,7 @@ chmod +x run.sh
 ./run.sh —user root —ip External-IP —port 22 —install
 ```
 Note:
-I used a ready-made template for its configuration here
+> I used a ready-made template for its configuration here
 You can change the protocol or... according to your needs and then do the installation
 
 **After installation, it will give you a link that you can use it to import on your client**
@@ -37,4 +48,4 @@ And in this way, a bridge is created between the internal and external server, s
 
  
 Note:
- You can also write a service for this so that when the server is restarted, forwarding is done again
+> You can also write a service for this so that when the server is restarted, forwarding is done again
