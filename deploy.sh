@@ -124,7 +124,9 @@ config
 ufw allow $PORT
 
 # Start Docker Compose Service
-docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
+sudo docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
+
+sleep 2
 
 echo "! UUID : $UUID"
 echo "! Use Below Link for Import:"
