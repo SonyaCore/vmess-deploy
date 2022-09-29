@@ -121,7 +121,14 @@ sleep 3
 config
 
 # Allow firewall 
-ufw allow $PORT
+firewall(){
+  # Check if UFW Exist
+  if [ -f "/usr/sbin/ufw" ]; then ufw allow $PORT/tcp ; ufw allow $showport/udp; ufw reload; fi
+  # Allow PORT in IP Tables
+  iptables -t filter -A INPUT -p tcp --dport $PORT -j ACCEPT
+  iptables -t filter -A OUTPUT -p tcp --dport $PORT -j ACCEPT
+}
+firewall
 
 # Start Docker Compose Service
 sudo docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
