@@ -123,7 +123,7 @@ config
 # Allow firewall 
 firewall(){
   # Check if UFW Exist
-  if [ -f "/usr/sbin/ufw" ]; then ufw allow $PORT/tcp ; ufw allow $showport/udp; ufw reload; fi
+  if [ -f "/usr/sbin/ufw" ]; then ufw allow $PORT/tcp ; ufw allow $PORT/udp; ufw reload; fi
   # Allow PORT in IP Tables
   iptables -t filter -A INPUT -p tcp --dport $PORT -j ACCEPT
   iptables -t filter -A OUTPUT -p tcp --dport $PORT -j ACCEPT
