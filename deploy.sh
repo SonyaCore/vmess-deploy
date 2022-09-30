@@ -10,8 +10,10 @@ PORT=80
 UUID=$(cat /proc/sys/kernel/random/uuid)
 IP=$(hostname -I | cut -d' ' -f1)
 CONFIGNAME="config.json"
+CONFIGLOGLEVEL = 'info'
 WEBSOCKETPATH = '/graphql'
-
+DOCKERCOMPOSEVERSION = '2.11.1'
+LINKNAME = 'v2ray'
 
 permissioncheck(){
 ROOT_UID=0
@@ -43,7 +45,7 @@ DOCKER
 cat > $CONFIGNAME <<CONFIG
 {
   "log": {
-    "loglevel": "info"
+    "loglevel": "$CONFIGLOGLEVEL"
   },
   "inbounds": [
     {
@@ -117,14 +119,19 @@ if [[ -f '/usr/bin/docker-compose' ]] || [[ -f '/usr/local/bin/docker-compose' ]
 then
     true
 else
-    curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+    curl -SL https://github.com/docker/compose/releases/download/v$DOCKERCOMPOSEVERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
-    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 fi
 
-# Run Service
-systemctl enable --now containerd
-systemctl enable --now docker
+STATUS="$(systemctl is-active docker.service)"
+
+if [ "${STATUS}" = "active" ]; then
+    echo "Docker service are already enabled."
+else 
+    systemctl enable --now containerd
+    systemctl enable --now docker
+fi
 
 sleep 3
 
@@ -156,9 +163,9 @@ printf vmess://;echo \{\"add\":\"$IP\", \
 \"host\":\"\", \
 \"id\":\"$UUID\", \
 \"net\":\"ws\", \
-\"path\":\"/graphql\", \
+\"path\":\"$WEBSOCKETPATH\", \
 \"port\":\"$PORT\", \
-\"ps\":\"v2ray\", \
+\"ps\":\"$LINKNAME\", \
 \"tls\":\"\", \
 \"type\":\"none\", \
 \"v\":\"2\"\}|base64 -w0;echo
