@@ -10,6 +10,7 @@ PORT=80
 UUID=$(cat /proc/sys/kernel/random/uuid)
 IP=$(hostname -I | cut -d' ' -f1)
 CONFIGNAME="config.json"
+WEBSOCKETPATH = '/graphql'
 
 
 permissioncheck(){
@@ -66,7 +67,7 @@ cat > $CONFIGNAME <<CONFIG
         "network": "ws",
         "wsSettings": {
           "connectionReuse": true,
-          "path": "/graphql"
+          "path": "$WEBSOCKETPATH"
         },
         "security": "none",
         "tcpSettings": {
@@ -103,25 +104,42 @@ cat > $CONFIGNAME <<CONFIG
 CONFIG
 }
 
-# Update Repo & Install Docker &
-curl https://get.docker.com | sudo sh
-curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# Update Repo & Install Docker If Docker not exists in system.
 
+if [[ -f '/usr/bin/docker' ]] || [[ -f '/usr/local/bin/docker' ]]
+then
+    true
+else
+    curl https://get.docker.com | sudo sh
+fi
+
+if [[ -f '/usr/bin/docker-compose' ]] || [[ -f '/usr/local/bin/docker-compose' ]]
+then
+    true
+else
+    curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+fi
 
 # Run Service
 systemctl enable --now containerd
 systemctl enable --now docker
 
-
 sleep 3
 
-# Make Config
+# makeconfig
 config
 
 # Allow firewall 
-ufw allow $PORT
+firewall(){
+  # Check if UFW Exist
+  if [ -f "/usr/sbin/ufw" ]; then ufw allow $PORT/tcp ; ufw allow $PORT/udp; ufw reload; fi
+  # Allow PORT in IP Tables
+  iptables -t filter -A INPUT -p tcp --dport $PORT -j ACCEPT
+  iptables -t filter -A OUTPUT -p tcp --dport $PORT -j ACCEPT
+}
+firewall
 
 # Start Docker Compose Service
 sudo docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
