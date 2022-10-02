@@ -10,10 +10,10 @@ PORT=80
 UUID=$(cat /proc/sys/kernel/random/uuid)
 IP=$(hostname -I | cut -d' ' -f1)
 CONFIGNAME="config.json"
-CONFIGLOGLEVEL ='info'
-WEBSOCKETPATH ='/graphql'
-DOCKERCOMPOSEVERSION ='2.11.1'
-LINKNAME ='v2ray'
+CONFIGLOGLEVEL='info'
+WEBSOCKETPATH='/graphql'
+DOCKERCOMPOSEVERSION='2.11.1'
+LINKNAME='v2ray'
 
 permissioncheck(){
 ROOT_UID=0
