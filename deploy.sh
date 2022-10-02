@@ -10,10 +10,10 @@ PORT=80
 UUID=$(cat /proc/sys/kernel/random/uuid)
 IP=$(hostname -I | cut -d' ' -f1)
 CONFIGNAME="config.json"
-CONFIGLOGLEVEL = 'info'
-WEBSOCKETPATH = '/graphql'
-DOCKERCOMPOSEVERSION = '2.11.1'
-LINKNAME = 'v2ray'
+CONFIGLOGLEVEL ='info'
+WEBSOCKETPATH ='/graphql'
+DOCKERCOMPOSEVERSION ='2.11.1'
+LINKNAME ='v2ray'
 
 permissioncheck(){
 ROOT_UID=0
@@ -112,7 +112,7 @@ if [[ -f '/usr/bin/docker' ]] || [[ -f '/usr/local/bin/docker' ]]
 then
     true
 else
-    curl https://get.docker.com | sudo sh
+    curl https://get.docker.com | sh
 fi
 
 if [[ -f '/usr/bin/docker-compose' ]] || [[ -f '/usr/local/bin/docker-compose' ]]
@@ -149,7 +149,7 @@ firewall(){
 firewall
 
 # Start Docker Compose Service
-sudo docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
+docker-compose up -d || printf "Pulling Failed \nMake sure your IP has access to the docker registry."
 
 sleep 2
 
