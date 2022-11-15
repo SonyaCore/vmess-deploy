@@ -40,7 +40,7 @@ services:
       - V2RAY_VMESS_AEAD_FORCED=false
     volumes:
         - ./$CONFIGNAME:/etc/v2ray/config.json:ro
-    entrypoint: ["v2ray","run","-c","/etc/v2ray/config.json"]
+    entrypoint: ["v2ray", "run", "-c", "/etc/v2ray/config.json"]
 DOCKER
 
 cat > $CONFIGNAME <<CONFIG
